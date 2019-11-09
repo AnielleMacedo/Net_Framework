@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MyDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Matches">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AwayTeam" Type="nvarchar(max)" />
+    <Property Name="HomeTeam" Type="nvarchar(max)" />
+    <Property Name="AwayScore" Type="int" Nullable="false" />
+    <Property Name="HomeScore" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" />
+    <Property Name="StadiumId" Type="int" />
+  </EntityType>
+  <EntityType Name="Stadium">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Venue" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Matches_ToStadium">
+    <End Role="Stadium" Type="Self.Stadium" Multiplicity="0..1" />
+    <End Role="Matches" Type="Self.Matches" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Stadium">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Matches">
+        <PropertyRef Name="StadiumId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="MyDbModelStoreContainer">
+    <EntitySet Name="Matches" EntityType="Self.Matches" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Stadium" EntityType="Self.Stadium" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Matches_ToStadium" Association="Self.FK_Matches_ToStadium">
+      <End Role="Stadium" EntitySet="Stadium" />
+      <End Role="Matches" EntitySet="Matches" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,12 @@
+﻿@using MyFirstWebApp.Models;
+@model Person
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Name @Model.Surname</h2>
+<ul>
+    <li>Age: @Model.Age</li>
+    @(Model.Genre ? "Male" : "Female")
+</ul>
