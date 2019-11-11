@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="biblioteca_jogosModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="editor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nome" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="genero">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descricao" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="jogo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="titulo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="valorPago" Type="float" />
+          <Property Name="imagem" Type="image" />
+          <Property Name="dataCompra" Type="date" />
+          <Property Name="id_editor" Type="int" Nullable="false" />
+          <Property Name="id_genero" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_jogo_editor">
+          <End Role="editor" Type="Self.editor" Multiplicity="1" />
+          <End Role="jogo" Type="Self.jogo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="editor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="jogo">
+              <PropertyRef Name="id_editor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_jogo_genero1">
+          <End Role="genero" Type="Self.genero" Multiplicity="1" />
+          <End Role="jogo" Type="Self.jogo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="genero">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="jogo">
+              <PropertyRef Name="id_genero" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="biblioteca_jogosModelStoreContainer">
+          <EntitySet Name="editor" EntityType="Self.editor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="genero" EntityType="Self.genero" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="jogo" EntityType="Self.jogo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_jogo_editor" Association="Self.FK_jogo_editor">
+            <End Role="editor" EntitySet="editor" />
+            <End Role="jogo" EntitySet="jogo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_jogo_genero1" Association="Self.FK_jogo_genero1">
+            <End Role="genero" EntitySet="genero" />
+            <End Role="jogo" EntitySet="jogo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="biblioteca_jogosModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="editor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="jogo" Relationship="Self.FK_jogo_editor" FromRole="editor" ToRole="jogo" />
+        </EntityType>
+        <EntityType Name="genero">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descricao" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="jogo" Relationship="Self.FK_jogo_genero1" FromRole="genero" ToRole="jogo" />
+        </EntityType>
+        <EntityType Name="jogo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="titulo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="valorPago" Type="Double" />
+          <Property Name="imagem" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="dataCompra" Type="DateTime" Precision="0" />
+          <Property Name="id_editor" Type="Int32" Nullable="false" />
+          <Property Name="id_genero" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="editor" Relationship="Self.FK_jogo_editor" FromRole="jogo" ToRole="editor" />
+          <NavigationProperty Name="genero" Relationship="Self.FK_jogo_genero1" FromRole="jogo" ToRole="genero" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_jogo_editor">
+          <End Role="editor" Type="Self.editor" Multiplicity="1" />
+          <End Role="jogo" Type="Self.jogo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="editor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="jogo">
+              <PropertyRef Name="id_editor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_jogo_genero1">
+          <End Role="genero" Type="Self.genero" Multiplicity="1" />
+          <End Role="jogo" Type="Self.jogo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="genero">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="jogo">
+              <PropertyRef Name="id_genero" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="biblioteca_jogosEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="editor" EntityType="Self.editor" />
+          <EntitySet Name="genero" EntityType="Self.genero" />
+          <EntitySet Name="jogo" EntityType="Self.jogo" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_jogo_editor" Association="Self.FK_jogo_editor">
+            <End Role="editor" EntitySet="editor" />
+            <End Role="jogo" EntitySet="jogo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_jogo_genero1" Association="Self.FK_jogo_genero1">
+            <End Role="genero" EntitySet="genero" />
+            <End Role="jogo" EntitySet="jogo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="biblioteca_jogosModelStoreContainer" CdmEntityContainer="biblioteca_jogosEntities">
+          <EntitySetMapping Name="editor">
+            <EntityTypeMapping TypeName="biblioteca_jogosModel.editor">
+              <MappingFragment StoreEntitySet="editor">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="genero">
+            <EntityTypeMapping TypeName="biblioteca_jogosModel.genero">
+              <MappingFragment StoreEntitySet="genero">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descricao" ColumnName="descricao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="jogo">
+            <EntityTypeMapping TypeName="biblioteca_jogosModel.jogo">
+              <MappingFragment StoreEntitySet="jogo">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="titulo" ColumnName="titulo" />
+                <ScalarProperty Name="valorPago" ColumnName="valorPago" />
+                <ScalarProperty Name="imagem" ColumnName="imagem" />
+                <ScalarProperty Name="dataCompra" ColumnName="dataCompra" />
+                <ScalarProperty Name="id_editor" ColumnName="id_editor" />
+                <ScalarProperty Name="id_genero" ColumnName="id_genero" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="biblioteca_jogosModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Nessuno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
